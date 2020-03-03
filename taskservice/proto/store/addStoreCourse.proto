@@ -1,0 +1,19 @@
+//生成命令  protoc --proto_path=:. --micro_out=. --go_out=. proto/*.proto
+
+syntax = "proto3";
+
+package go.micro.storeservice;
+
+message  AddStoreCourseParam {
+     int64 authorId = 1;
+     int64 courseId = 2;
+}
+
+message  AddStoreCourseResponse {
+    string result = 3;
+}
+
+// 服务接口
+service AddStoreCourseService {
+    rpc AddStoreCourse(AddStoreCourseParam) returns (AddStoreCourseResponse) {}
+}

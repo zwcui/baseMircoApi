@@ -1,0 +1,203 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "beego Test API",
+        "description": "beego has a very cool tools to autogenerate documents for your API",
+        "version": "1.0.0",
+        "termsOfService": "http://beego.me/",
+        "contact": {
+            "email": "astaxie@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        }
+    },
+    "basePath": "/v2",
+    "paths": {
+        "/socket/getAuthorSocketOnlineList": {
+            "get": {
+                "tags": [
+                    "socket"
+                ],
+                "description": "获取socket在线用户列表",
+                "operationId": "SocketController.获取socket在线用户列表",
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.AuthorSocketList"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        ".Conn": {
+            "type": "object"
+        },
+        "models.Author": {
+            "title": "Author",
+            "type": "object",
+            "properties": {
+                "IsTest": {
+                    "description": "是否测试账号 0:否 1:是",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Password": {
+                    "description": "密码,加密存储",
+                    "type": "string"
+                },
+                "Salt": {
+                    "description": "salt",
+                    "type": "string"
+                },
+                "access_token": {
+                    "description": "接口调用凭证",
+                    "type": "string"
+                },
+                "appOpenid": {
+                    "description": "用户的标识，对当前app唯一",
+                    "type": "string"
+                },
+                "city": {
+                    "description": "用户所在城市",
+                    "type": "string"
+                },
+                "country": {
+                    "description": "用户所在国家",
+                    "type": "string"
+                },
+                "created": {
+                    "description": "创建时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "deleted": {
+                    "description": "删除时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "expires_in": {
+                    "description": "access_token接口调用凭证超时时间，单位（秒）",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "headimgurl": {
+                    "description": "用户头像，最后一个数值代表正方形头像大小（有0、46、64、96、132数值可选，0代表640*640正方形头像），用户没有头像时该项为空。若用户更换头像，原有头像URL将失效。",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "loginUuid": {
+                    "description": "登录uuid",
+                    "type": "string"
+                },
+                "nickname": {
+                    "description": "用户的昵称",
+                    "type": "string"
+                },
+                "openid": {
+                    "description": "用户的标识，对当前公众号唯一(关注、授权)",
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "description": "用户手机号",
+                    "type": "string"
+                },
+                "privilege": {
+                    "description": "用户特权信息，json数组，如微信沃卡用户为（chinaunicom）",
+                    "type": "string"
+                },
+                "province": {
+                    "description": "用户所在省份",
+                    "type": "string"
+                },
+                "refresh_token": {
+                    "description": "用户刷新access_token",
+                    "type": "string"
+                },
+                "scope": {
+                    "description": "用户授权的作用域，使用逗号（,）分隔",
+                    "type": "string"
+                },
+                "sex": {
+                    "description": "用户的性别，值为1时是男性，值为2时是女性，值为0时是未知",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "unionid": {
+                    "description": "只有在用户将公众号绑定到微信开放平台帐号后，才会出现该字段。",
+                    "type": "string"
+                },
+                "updated": {
+                    "description": "修改时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "webOpenid": {
+                    "description": "用户的标识，对当前网站应用唯一",
+                    "type": "string"
+                }
+            }
+        },
+        "models.AuthorSocket": {
+            "title": "AuthorSocket",
+            "type": "object",
+            "properties": {
+                "author": {
+                    "$ref": "#/definitions/models.Author",
+                    "description": "用户"
+                },
+                "connection": {
+                    "$ref": "#/definitions/models.SocketConnection",
+                    "description": "链接"
+                }
+            }
+        },
+        "models.AuthorSocketList": {
+            "title": "AuthorSocketList",
+            "type": "object",
+            "properties": {
+                "authorList": {
+                    "description": "用户列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.AuthorSocket"
+                    }
+                }
+            }
+        },
+        "models.SocketConnection": {
+            "title": "SocketConnection",
+            "type": "object",
+            "properties": {
+                "conn": {
+                    "$ref": "#/definitions/websocket.Conn",
+                    "description": "socket连接"
+                },
+                "connType": {
+                    "description": "socket连接类型，1前台，2后台",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "expireTime": {
+                    "description": "socket连接有效截止时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "token": {
+                    "description": "用户token",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

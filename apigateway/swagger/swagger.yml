@@ -1,0 +1,37 @@
+swagger: "2.0"
+info:
+  title: beego Test API
+  description: beego has a very cool tools to autogenerate documents for your API
+  version: 1.0.0
+  termsOfService: http://beego.me/
+  contact:
+    email: astaxie@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+basePath: /v2
+paths:
+  /apiGateway/refreshUrlConfig:
+    get:
+      tags:
+      - apiGateway
+      description: 刷新网关配置信息
+      operationId: ApiGatewayController.刷新网关配置信息
+      responses:
+        "200":
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/models.UrlConfig'
+definitions:
+  models.UrlConfig:
+    title: UrlConfig
+    type: object
+    properties:
+      description:
+        description: 描述
+        type: string
+      requestRedirectArray:
+        description: 请求跳转地址
+      requestURIArray:
+        description: 请求地址uri

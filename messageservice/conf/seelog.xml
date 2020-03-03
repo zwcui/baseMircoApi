@@ -1,0 +1,14 @@
+<seelog>
+    <outputs formatid="main">
+        <!--表示控制台输出，-->
+        <console/>
+        <!--使用main的输出格式-->
+        <filter levels="info,critical,error,warn">
+            <rollingfile type="date" filename="/opt/zhangmaiLogs/log.log" namemode="prefix" datepattern="2006.01.02" maxrolls="30" />
+        </filter>
+
+    </outputs>
+    <formats>
+        <format id="main" format="%Date/%Time [%LEVEL] %File %Line %Msg%n"/>
+    </formats>
+</seelog>

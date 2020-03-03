@@ -1,0 +1,34 @@
+//生成命令  protoc --proto_path=:. --micro_out=. --go_out=. proto/*.proto
+
+syntax = "proto3";
+
+package go.micro.messageservice;
+
+message PushMessageToUserParam {
+    string content = 1;
+    string receiverId = 2;
+    string actionUrl = 3;
+    string type = 4;
+}
+
+message PushMessageToUserResponse {
+    string result = 5;
+}
+
+// 服务接口
+service PushMessageToUserService {
+    rpc PushMessageToUser(PushMessageToUserParam) returns (PushMessageToUserResponse) {}
+}
+
+message JumpUrlWithKeyAndParamsParam {
+    string key = 6;
+    map<string, string> map = 7; // 定义Map对象
+}
+
+message JumpUrlWithKeyAndParamsResponse {
+    string urlStr = 8;
+}
+
+service JumpUrlWithKeyAndParamsService {
+    rpc JumpUrlWithKeyAndParams(JumpUrlWithKeyAndParamsParam) returns (JumpUrlWithKeyAndParamsResponse) {}
+}

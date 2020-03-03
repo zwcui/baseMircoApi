@@ -1,0 +1,18 @@
+//生成命令  protoc --proto_path=:. --micro_out=. --go_out=. proto/*.proto
+
+syntax = "proto3";
+
+package go.micro.storeservice;
+
+message CreateStoreParam {
+     string store = 1;
+}
+
+message CreateStoreResponse {
+    string result = 2;
+}
+
+// 服务接口
+service CreateStoreService {
+    rpc CreateStore(CreateStoreParam) returns (CreateStoreResponse) {}
+}

@@ -1,0 +1,3276 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "beego Test API",
+        "description": "beego has a very cool tools to autogenerate documents for your API",
+        "version": "1.0.0",
+        "termsOfService": "http://beego.me/",
+        "contact": {
+            "email": "astaxie@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        }
+    },
+    "basePath": "/v2",
+    "paths": {
+        "/banner/addBanner": {
+            "post": {
+                "tags": [
+                    "banner"
+                ],
+                "description": "新增Banner（h5使用）",
+                "operationId": "BannerController.新增Banner（h5使用）",
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "coverUrl",
+                        "description": "图片url",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "actionUrl",
+                        "description": "跳转url",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "position",
+                        "description": "广告位置，1为首页Banner，2为首页广告，3为频道banner，4为个人中心广告，5为vip个人中心广告",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "status",
+                        "description": "状态，0为无效，1为有效",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "sortNo",
+                        "description": "排序号，越小越前",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "needSignIn",
+                        "description": "点击banner是否需要登录，1是0否",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} success"
+                    }
+                }
+            }
+        },
+        "/banner/deleteBanner": {
+            "delete": {
+                "tags": [
+                    "banner"
+                ],
+                "description": "删除banner(后台使用)",
+                "operationId": "BannerController.删除banner(后台使用)",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "id",
+                        "description": "id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} success"
+                    }
+                }
+            }
+        },
+        "/banner/getBannerList": {
+            "get": {
+                "tags": [
+                    "banner"
+                ],
+                "description": "banner列表",
+                "operationId": "BannerController.banner列表",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "position",
+                        "description": "广告位置，1为首页Banner，2为首页广告，3为频道banner，4为个人中心广告，5为vip个人中心广告 6分销市场的首页banner 7分销市场首页广告",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/models.BannerListContainer"
+                        }
+                    }
+                }
+            }
+        },
+        "/banner/updateBanner": {
+            "patch": {
+                "tags": [
+                    "banner"
+                ],
+                "description": "修改Banner（h5使用）",
+                "operationId": "BannerController.修改Banner（h5使用）",
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "id",
+                        "description": "排序号，越小越前",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "coverUrl",
+                        "description": "图片url",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "actionUrl",
+                        "description": "跳转url",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "position",
+                        "description": "广告位置，1为首页Banner，2为首页广告，3为频道banner，4为个人中心广告，5为vip个人中心广告",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "status",
+                        "description": "状态，0为无效，1为有效",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "sortNo",
+                        "description": "排序号，越小越前",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "needSignIn",
+                        "description": "点击banner是否需要登录，1是0否",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} success"
+                    }
+                }
+            }
+        },
+        "/bug/createBugRecord": {
+            "post": {
+                "tags": [
+                    "bug"
+                ],
+                "description": "提交app错误日志",
+                "operationId": "BugController.提交app错误日志",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "bugRecord",
+                        "description": "错误信息",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.BugRecord"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} success"
+                    }
+                }
+            }
+        },
+        "/enroll/addEnroll": {
+            "post": {
+                "tags": [
+                    "enroll"
+                ],
+                "description": "报名领取课程",
+                "operationId": "EnrollController.报名领取课程",
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "authorId",
+                        "description": "报名者id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "salesmanId",
+                        "description": "业务员id",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "phoneNumber",
+                        "description": "手机号",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "realName",
+                        "description": "真实姓名",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "profession",
+                        "description": "职业",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "city",
+                        "description": "城市",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} success"
+                    }
+                }
+            }
+        },
+        "/enroll/getEnrollList": {
+            "get": {
+                "tags": [
+                    "enroll"
+                ],
+                "description": "报名领取课程",
+                "operationId": "EnrollController.报名领取课程",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "authorId",
+                        "description": "报名者id",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "phoneNumber",
+                        "description": "手机号",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "lastAuthorName",
+                        "description": "上级姓名",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "realName",
+                        "description": "真实姓名",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "salesmanId",
+                        "description": "业务员id",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageNum",
+                        "description": "page num start from 1",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageTime",
+                        "description": "page time should be empty when pagenum == 1",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageSize",
+                        "description": "page size default is 15",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/models.EnrollListContainer"
+                        }
+                    }
+                }
+            }
+        },
+        "/help/addHelp": {
+            "post": {
+                "tags": [
+                    "help"
+                ],
+                "description": "新增帮助（h5使用）",
+                "operationId": "HelpController.新增帮助（h5使用）",
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "name",
+                        "description": "名称",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "level",
+                        "description": "级别 1为分类，2为章节，3为标题",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "lastId",
+                        "description": "上级id",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "content",
+                        "description": "文章内容",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} success"
+                    }
+                }
+            }
+        },
+        "/help/deleteHelp": {
+            "delete": {
+                "tags": [
+                    "help"
+                ],
+                "description": "删除帮助（h5使用）",
+                "operationId": "HelpController.删除帮助（h5使用）",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "id",
+                        "description": "id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} success"
+                    }
+                }
+            }
+        },
+        "/help/getAllHelpList": {
+            "get": {
+                "tags": [
+                    "help"
+                ],
+                "description": "获取帮助列表（h5官网使用）",
+                "operationId": "HelpController.获取帮助列表（h5官网使用）",
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/models.AllHelp"
+                        }
+                    }
+                }
+            }
+        },
+        "/help/getHelpInfo": {
+            "get": {
+                "tags": [
+                    "help"
+                ],
+                "description": "获取帮助详情信息（h5官网使用）",
+                "operationId": "HelpController.获取帮助详情信息（h5官网使用）",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "id",
+                        "description": "id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/models.Help"
+                        }
+                    }
+                }
+            }
+        },
+        "/help/getHelpList": {
+            "get": {
+                "tags": [
+                    "help"
+                ],
+                "description": "获取帮助列表（h5使用）",
+                "operationId": "HelpController.获取帮助列表（h5使用）",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "level",
+                        "description": "级别 1为分类，2为章节，3为标题",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageNum",
+                        "description": "page num start from 1",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageTime",
+                        "description": "page time should be empty when pagenum == 1",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageSize",
+                        "description": "page size default is 15",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/models.HelpDetailListContainer"
+                        }
+                    }
+                }
+            }
+        },
+        "/help/updateHelp": {
+            "patch": {
+                "tags": [
+                    "help"
+                ],
+                "description": "新增帮助（h5使用）",
+                "operationId": "HelpController.新增帮助（h5使用）",
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "id",
+                        "description": "id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "name",
+                        "description": "名称",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "level",
+                        "description": "级别 1为分类，2为章节，3为标题",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "lastId",
+                        "description": "上级id",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "content",
+                        "description": "文章内容",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} success"
+                    }
+                }
+            }
+        },
+        "/joinUs/addJoinUsColumn": {
+            "post": {
+                "tags": [
+                    "joinUs"
+                ],
+                "description": "加盟开课设置栏目",
+                "operationId": "JoinUsController.加盟开课设置栏目",
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "uId",
+                        "description": "用户id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "classify",
+                        "description": "分类",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "title",
+                        "description": "课程名称",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "cover",
+                        "description": "封面",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "videoUrl",
+                        "description": "介绍视频地址",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "showType",
+                        "description": "展示类型，1为仅代理可看（伯乐用户 / 代理商），2为VIP会员可看，3为所有用户可看",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "totalDuration",
+                        "description": "总时长，单位秒",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} success"
+                    }
+                }
+            }
+        },
+        "/joinUs/deleteJoinUsColumn": {
+            "delete": {
+                "tags": [
+                    "joinUs"
+                ],
+                "description": "删除加盟开课栏目",
+                "operationId": "JoinUsController.删除加盟开课栏目",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "joinUsId",
+                        "description": "栏目id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} success"
+                    }
+                }
+            }
+        },
+        "/joinUs/getJoinUsColumnList": {
+            "get": {
+                "tags": [
+                    "joinUs"
+                ],
+                "description": "加盟开课栏目列表",
+                "operationId": "JoinUsController.加盟开课栏目列表",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "classify",
+                        "description": "分类",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "showType",
+                        "description": "展示类型，0所有，1为仅代理可看（伯乐用户 / 代理商），2为VIP会员可看，3为所有用户可看",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageNum",
+                        "description": "page num start from 1",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageTime",
+                        "description": "page time should be empty when pagenum == 1",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageSize",
+                        "description": "page size default is 15",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/models.JoinUsListContainer"
+                        }
+                    }
+                }
+            }
+        },
+        "/public/app-config": {
+            "get": {
+                "tags": [
+                    "public"
+                ],
+                "description": "获取app配置信息",
+                "operationId": "PublicController.获取app配置信息",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "system",
+                        "description": "1 android 2 ios",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "version",
+                        "description": "版本号",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/models.AppConfig"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "public"
+                ],
+                "description": "新增app配置信息（后台使用）",
+                "operationId": "PublicController.新增app配置信息（后台使用）",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "config",
+                        "description": "配置信息",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.AppConfig"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/models.AppConfig"
+                        }
+                    }
+                }
+            }
+        },
+        "/public/app-config/all": {
+            "get": {
+                "tags": [
+                    "public"
+                ],
+                "description": "获取app配置信息列表(后台使用)",
+                "operationId": "PublicController.获取app配置信息列表(后台使用)",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "pageNum",
+                        "description": "page num start from 1",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageTime",
+                        "description": "page time should be empty when pagenum == 1",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageSize",
+                        "description": "page size default is 15",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/models.AppConfigListContainer"
+                        }
+                    }
+                }
+            }
+        },
+        "/public/app-config/{id}": {
+            "patch": {
+                "tags": [
+                    "public"
+                ],
+                "description": "修改app配置信息（后台使用）",
+                "operationId": "PublicController.修改app配置信息（后台使用）",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "配置信息id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "version",
+                        "description": "版本号",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "description",
+                        "description": "描述",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "forcedUpdate",
+                        "description": "是否强制更新",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/models.AppConfig"
+                        }
+                    }
+                }
+            }
+        },
+        "/public/authed-user-info": {
+            "get": {
+                "tags": [
+                    "public"
+                ],
+                "description": "获取认证授权的用户信息",
+                "operationId": "PublicController.获取认证授权的用户信息",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "code",
+                        "description": "code",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string}  参考微信文档"
+                    }
+                }
+            }
+        },
+        "/public/getSystemComponentAccessToken": {
+            "get": {
+                "tags": [
+                    "public"
+                ],
+                "description": "获取系统参数component_access_token（h5使用）",
+                "operationId": "PublicController.获取系统参数component_access_token（h5使用）",
+                "responses": {
+                    "200": {
+                        "description": "{string} success"
+                    }
+                }
+            }
+        },
+        "/public/getSystemConfig": {
+            "get": {
+                "tags": [
+                    "public"
+                ],
+                "description": "获取VIP配置参数",
+                "operationId": "PublicController.获取VIP配置参数",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "program",
+                        "description": "参数名称,多个参数用,隔开",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/models.SystemConfigListContainer"
+                        }
+                    }
+                }
+            }
+        },
+        "/public/getSystemPreAuthCode": {
+            "get": {
+                "tags": [
+                    "public"
+                ],
+                "description": "获取系统参数pre_auth_code（h5使用）",
+                "operationId": "PublicController.获取系统参数pre_auth_code（h5使用）",
+                "responses": {
+                    "200": {
+                        "description": "{string} success"
+                    }
+                }
+            }
+        },
+        "/public/resetPassword": {
+            "patch": {
+                "tags": [
+                    "public"
+                ],
+                "description": "登录（h5使用）",
+                "operationId": "PublicController.重置密码（h5使用）",
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "uId",
+                        "description": "uId",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "oldPassword",
+                        "description": "旧登录密码",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "newPassword",
+                        "description": "新登录密码",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} success"
+                    }
+                }
+            }
+        },
+        "/public/signIn": {
+            "post": {
+                "tags": [
+                    "public"
+                ],
+                "description": "公众号管理者登录（h5使用）",
+                "operationId": "PublicController.公众号管理者登录（h5使用）",
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "nickName",
+                        "description": "登录账户",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "password",
+                        "description": "登录密码",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/models.UserShortContainer"
+                        }
+                    }
+                }
+            }
+        },
+        "/public/signature": {
+            "post": {
+                "tags": [
+                    "public"
+                ],
+                "description": "签名",
+                "operationId": "PublicController.签名",
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "url",
+                        "description": "url",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string}  signature,noncestr,timestamp"
+                    }
+                }
+            }
+        },
+        "/public/vericode": {
+            "get": {
+                "tags": [
+                    "public"
+                ],
+                "description": "获取验证码",
+                "operationId": "PublicController.获取验证码",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "areaCode",
+                        "description": "区号，中国+86",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "phoneNum",
+                        "description": "phoneNum",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "bind",
+                        "description": "验证手机号是否绑定 0:不验证 1:验证码登录时验证 2:换绑手机号时验证",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} success"
+                    }
+                }
+            }
+        },
+        "/public/version": {
+            "post": {
+                "tags": [
+                    "public"
+                ],
+                "description": "上传最新的APK文件（IOS暂时提供位置，不做调用）（后台使用）",
+                "operationId": "PublicController.上传版本（后台使用）",
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "deviceOs",
+                        "description": "deviceOS",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "version",
+                        "description": "版本号",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "description",
+                        "description": "描述",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "filePath",
+                        "description": "文件地址",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "channel",
+                        "description": "渠道",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string}\tsuccess"
+                    }
+                }
+            }
+        },
+        "/public/version/history": {
+            "get": {
+                "tags": [
+                    "public"
+                ],
+                "description": "获取历史版本号，以创建时间降序排序（后台使用）",
+                "operationId": "PublicController.获取历史版本号列表（后台使用）",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "pageNum",
+                        "description": "page num start from 1",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageTime",
+                        "description": "page time should be empty when pagenum == 1",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageSize",
+                        "description": "page size default is 15",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/models.VersionContainer"
+                        }
+                    }
+                }
+            }
+        },
+        "/public/version/{deviceOs}": {
+            "get": {
+                "tags": [
+                    "public"
+                ],
+                "description": "获取当前最新的版本号",
+                "operationId": "PublicController.获取最新的版本号",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "deviceOs",
+                        "description": "设备操作系统",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "channel",
+                        "description": "渠道",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{models.version}"
+                    }
+                }
+            }
+        },
+        "/public/version/{versionId}": {
+            "delete": {
+                "tags": [
+                    "public"
+                ],
+                "description": "删除该版本",
+                "operationId": "PublicController.删除该版本",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "versionId",
+                        "description": "要删除的版本编号",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string}\tsuccess"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "public"
+                ],
+                "description": "修改版本描述，",
+                "operationId": "PublicController.修改版本描述",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "versionId",
+                        "description": "修改的版本编号",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "description",
+                        "description": "修改的版本描述内容",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string}\tsuccess"
+                    }
+                }
+            }
+        },
+        "/qrCode/createQRCode": {
+            "post": {
+                "tags": [
+                    "qrCode"
+                ],
+                "description": "新增二维码",
+                "operationId": "QRCodeController.新增二维码",
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "codeContent",
+                        "description": "二维码存储内容",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string}"
+                    }
+                }
+            }
+        },
+        "/qrCode/createWechatQRCode": {
+            "post": {
+                "tags": [
+                    "qrCode"
+                ],
+                "description": "生成微信临时二维码",
+                "operationId": "QRCodeController.生成微信临时二维码",
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "data",
+                        "description": "二维码存储内容",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/models.QrcodeJsonBody"
+                        }
+                    }
+                }
+            }
+        },
+        "/questionnaire/answerQuestionnaire": {
+            "post": {
+                "tags": [
+                    "questionnaire"
+                ],
+                "description": "上传回答解析（h5使用）",
+                "operationId": "QuestionnaireController.上传回答解析（h5使用）",
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "questionnaireId",
+                        "description": "questionnaireId",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "answerJson",
+                        "description": "answerJson",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "phoneNumber",
+                        "description": "phoneNumber",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} success"
+                    }
+                }
+            }
+        },
+        "/questionnaire/getFreeCourseAfterQuestionnaire": {
+            "post": {
+                "tags": [
+                    "questionnaire"
+                ],
+                "description": "回答问卷成功后领取课程（h5使用）",
+                "operationId": "QuestionnaireController.回答问卷成功后领取课程（h5使用）",
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "authorId",
+                        "description": "用户id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} success"
+                    }
+                }
+            }
+        },
+        "/questionnaire/getQuestionnaireAnswerList": {
+            "get": {
+                "tags": [
+                    "questionnaire"
+                ],
+                "description": "后台查看调查问卷统计结果（h5使用）",
+                "operationId": "QuestionnaireController.后台查看调查问卷详细回答（h5使用）",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "questionnaireAuthorStatisticsId",
+                        "description": "问卷统计id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/models.QuestionnaireAnswerListContainer"
+                        }
+                    }
+                }
+            }
+        },
+        "/questionnaire/getQuestionnaireAuthorStatisticsList": {
+            "get": {
+                "tags": [
+                    "questionnaire"
+                ],
+                "description": "后台查看调查问卷统计结果（h5使用）",
+                "operationId": "QuestionnaireController.后台查看调查问卷统计结果（h5使用）",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "sex",
+                        "description": "性别",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "phoneNumber",
+                        "description": "手机号",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "hasCourse",
+                        "description": "是否领取课程，1是0否，-1或不传表示不筛选",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageNum",
+                        "description": "page num start from 1",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageTime",
+                        "description": "page time should be empty when pagenum == 1",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageSize",
+                        "description": "page size default is 15",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/models.QuestionnaireAuthorStatisticsForBackendContainer"
+                        }
+                    }
+                }
+            }
+        },
+        "/questionnaire/getQuestionnaireResult": {
+            "get": {
+                "tags": [
+                    "questionnaire"
+                ],
+                "description": "查看调查问卷结果（h5使用）",
+                "operationId": "QuestionnaireController.查看调查问卷结果（h5使用）",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "questionnaireId",
+                        "description": "questionnaireId",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authorId",
+                        "description": "authorId",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/models.QuestionnaireAuthorStatisticsContainer"
+                        }
+                    }
+                }
+            }
+        },
+        "/questionnaire/showQuestionnaire": {
+            "get": {
+                "tags": [
+                    "questionnaire"
+                ],
+                "description": "查看调查问卷（h5使用）",
+                "operationId": "QuestionnaireController.查看调查问卷（h5使用）",
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "questionnaireId",
+                        "description": "questionnaireId",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/models.QuestionnaireQuestionListContainer"
+                        }
+                    }
+                }
+            }
+        },
+        "/recentActivity/addRecentActivity": {
+            "post": {
+                "tags": [
+                    "recentActivity"
+                ],
+                "description": "新增近期活动",
+                "operationId": "RecentActivityController.新增近期活动",
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "uId",
+                        "description": "用户id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "title",
+                        "description": "活动名称",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "banner",
+                        "description": "活动海报",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "content",
+                        "description": "活动介绍",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} success"
+                    }
+                }
+            }
+        },
+        "/recentActivity/deleteRecentActivity": {
+            "delete": {
+                "tags": [
+                    "recentActivity"
+                ],
+                "description": "删除近期活动",
+                "operationId": "RecentActivityController.删除近期活动",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "recentActivityId",
+                        "description": "近期活动id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} success"
+                    }
+                }
+            }
+        },
+        "/recentActivity/getRecentActivity": {
+            "get": {
+                "tags": [
+                    "recentActivity"
+                ],
+                "description": "活动详情",
+                "operationId": "RecentActivityController.活动详情",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "id",
+                        "description": "活动id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/models.RecentActivityDetailContainer"
+                        }
+                    }
+                }
+            }
+        },
+        "/recentActivity/getRecentActivityList": {
+            "get": {
+                "tags": [
+                    "recentActivity"
+                ],
+                "description": "近期活动列表",
+                "operationId": "RecentActivityController.近期活动列表",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "pageNum",
+                        "description": "page num start from 1",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageTime",
+                        "description": "page time should be empty when pagenum == 1",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageSize",
+                        "description": "page size default is 15",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/models.RecentActivityContainer"
+                        }
+                    }
+                }
+            }
+        },
+        "/recentActivity/updateRecentActivity": {
+            "patch": {
+                "tags": [
+                    "recentActivity"
+                ],
+                "description": "修改近期活动",
+                "operationId": "RecentActivityController.修改近期活动",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "recentActivityId",
+                        "description": "近期活动id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "title",
+                        "description": "活动名称",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "banner",
+                        "description": "活动海报",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "content",
+                        "description": "活动介绍",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} success"
+                    }
+                }
+            }
+        },
+        "/report/addReport": {
+            "post": {
+                "tags": [
+                    "report"
+                ],
+                "description": "举报",
+                "operationId": "ReportController.举报",
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "authorId",
+                        "description": "用户id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "type",
+                        "description": "举报类型 1:视频 2:评论 3:课程",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "valueId",
+                        "description": "type为1时:视频id, type为2时:评论id, type为3时:课程id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "classify",
+                        "description": "举报内容类别 1:违法违禁, 2:色情, 3:低俗, 4:赌博诈骗, 5:血腥暴力, 6:人生攻击, 7:与其他视频相同, 8:不良封面标题, 9;青少年不良信息, 10:其他",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "content",
+                        "description": "举报内容",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} success"
+                    }
+                }
+            }
+        },
+        "/report/getReportList": {
+            "get": {
+                "tags": [
+                    "report"
+                ],
+                "description": "举报列表",
+                "operationId": "ReportController.举报列表",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "pageNum",
+                        "description": "page num start from 1",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageTime",
+                        "description": "page time should be empty when pagenum == 1",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageSize",
+                        "description": "page size default is 15",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/models.ReportListContainer"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.AllHelp": {
+            "title": "AllHelp",
+            "type": "object",
+            "properties": {
+                "helpList": {
+                    "description": "分类",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.HelpClassify"
+                    }
+                }
+            }
+        },
+        "models.AppConfig": {
+            "title": "AppConfig",
+            "type": "object",
+            "properties": {
+                "description": {
+                    "description": "描述",
+                    "type": "string"
+                },
+                "forcedUpdate": {
+                    "description": "是否强制更新 0：否 1：是",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "id": {
+                    "description": "id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "system": {
+                    "description": "设备系统类型 1 android 2 ios",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "version": {
+                    "description": "版本号",
+                    "type": "string"
+                }
+            }
+        },
+        "models.AppConfigListContainer": {
+            "title": "BaseListContainer",
+            "type": "object",
+            "properties": {
+                "appConfigList": {
+                    "description": "app配置",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.AppConfig"
+                    }
+                },
+                "pageNum": {
+                    "description": "当前页数",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "pageTime": {
+                    "description": "查询时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "totalCount": {
+                    "description": "总数",
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.AuthInfoShort": {
+            "title": "AuthInfoShort",
+            "type": "object",
+            "properties": {
+                "created": {
+                    "description": "创建时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "deleted": {
+                    "description": "删除时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "headImg": {
+                    "description": "授权方头像",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "nickName": {
+                    "description": "授权方昵称",
+                    "type": "string"
+                },
+                "principalName": {
+                    "description": "公众号的主体名称",
+                    "type": "string"
+                },
+                "qrcodeUrl": {
+                    "description": "二维码图片的URL，开发者最好自行也进行保存",
+                    "type": "string"
+                },
+                "remark": {
+                    "description": "备注",
+                    "type": "string"
+                },
+                "serviceType": {
+                    "description": "授权方公众号类型，0代表订阅号，1代表由历史老帐号升级后的订阅号，2代表服务号",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "status": {
+                    "description": "状态，1为启用 2停用",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "updated": {
+                    "description": "修改时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "verifyType": {
+                    "description": "授权方认证类型，-1代表未认证，0代表微信认证，1代表新浪微博认证，2代表腾讯微博认证，3代表已资质认证通过但还未通过名称认证，4代表已资质认证通过、还未通过名称认证，但通过了新浪微博认证，5代表已资质认证通过、还未通过名称认证，但通过了腾讯微博认证",
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.Banner": {
+            "title": "Banner",
+            "type": "object",
+            "properties": {
+                "actionUrl": {
+                    "description": "跳转url",
+                    "type": "string"
+                },
+                "coverUrl": {
+                    "description": "图片url",
+                    "type": "string"
+                },
+                "created": {
+                    "description": "创建时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "id": {
+                    "description": "id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "needSignIn": {
+                    "description": "点击banner是否需要登录，1是0否",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "position": {
+                    "description": "广告位置，1为首页Banner，2为首页广告，3为频道banner，4为个人中心广告，5为vip个人中心广告（app跳转至公众号开店）6分销市场的首页banner 7分销市场首页广告",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "sortNo": {
+                    "description": "排序号，越小越前",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "status": {
+                    "description": "状态，0为无效，1为有效",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "updated": {
+                    "description": "更新时间",
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.BannerListContainer": {
+            "title": "BannerListContainer",
+            "type": "object",
+            "properties": {
+                "bannerList": {
+                    "description": "banner列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Banner"
+                    }
+                }
+            }
+        },
+        "models.BaseListContainer": {
+            "title": "BaseListContainer",
+            "type": "object",
+            "properties": {
+                "pageNum": {
+                    "description": "当前页数",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "pageTime": {
+                    "description": "查询时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "totalCount": {
+                    "description": "总数",
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.BugRecord": {
+            "title": "BugRecord",
+            "type": "object",
+            "properties": {
+                "appVersion": {
+                    "description": "应用版本",
+                    "type": "string"
+                },
+                "authorId": {
+                    "description": "authorId",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "deviceModel": {
+                    "description": "设备型号",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "logInfo": {
+                    "description": "错误信息",
+                    "type": "string"
+                },
+                "system": {
+                    "description": "设备系统类型 0 未知 1 android 2 ios 3 公众号 4 小程序 5 网站",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "systemVersion": {
+                    "description": "设备系统版本",
+                    "type": "string"
+                },
+                "uId": {
+                    "description": "uId",
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.Enroll": {
+            "title": "Enroll",
+            "type": "object",
+            "properties": {
+                "authorId": {
+                    "description": "报名人id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "city": {
+                    "description": "城市",
+                    "type": "string"
+                },
+                "created": {
+                    "description": "创建时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "deleted": {
+                    "description": "删除时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "id": {
+                    "description": "id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "phoneNumber": {
+                    "description": "用户手机号",
+                    "type": "string"
+                },
+                "profession": {
+                    "description": "职业",
+                    "type": "string"
+                },
+                "realName": {
+                    "description": "真实姓名",
+                    "type": "string"
+                },
+                "salesmanId": {
+                    "description": "业务员id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "updated": {
+                    "description": "修改时间",
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.EnrollDetail": {
+            "title": "Enroll",
+            "type": "object",
+            "properties": {
+                "authorId": {
+                    "description": "报名人id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "city": {
+                    "description": "城市",
+                    "type": "string"
+                },
+                "created": {
+                    "description": "创建时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "deleted": {
+                    "description": "删除时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "id": {
+                    "description": "id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "lastAuthorName": {
+                    "description": "上级姓名",
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "description": "用户手机号",
+                    "type": "string"
+                },
+                "profession": {
+                    "description": "职业",
+                    "type": "string"
+                },
+                "realName": {
+                    "description": "真实姓名",
+                    "type": "string"
+                },
+                "salesmanId": {
+                    "description": "业务员id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "updated": {
+                    "description": "修改时间",
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.EnrollListContainer": {
+            "title": "BaseListContainer",
+            "type": "object",
+            "properties": {
+                "enrollList": {
+                    "description": "报名列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.EnrollDetail"
+                    }
+                },
+                "pageNum": {
+                    "description": "当前页数",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "pageTime": {
+                    "description": "查询时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "totalCount": {
+                    "description": "总数",
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.Help": {
+            "title": "Help",
+            "type": "object",
+            "properties": {
+                "content": {
+                    "description": "内容",
+                    "type": "string"
+                },
+                "created": {
+                    "description": "注册时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "deleted": {
+                    "description": "删除时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "id": {
+                    "description": "id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "lastId": {
+                    "description": "上级id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "level": {
+                    "description": "级别 1为分类，2为章节，3为标题",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "name": {
+                    "description": "名称",
+                    "type": "string"
+                },
+                "updated": {
+                    "description": "修改时间",
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.HelpChapter": {
+            "title": "HelpChapter",
+            "type": "object",
+            "properties": {
+                "chapter": {
+                    "$ref": "#/definitions/models.Help",
+                    "description": "章节"
+                },
+                "titleList": {
+                    "description": "标题",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.HelpTitle"
+                    }
+                }
+            }
+        },
+        "models.HelpClassify": {
+            "title": "HelpClassify",
+            "type": "object",
+            "properties": {
+                "chapterList": {
+                    "description": "章节",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.HelpChapter"
+                    }
+                },
+                "classify": {
+                    "$ref": "#/definitions/models.Help",
+                    "description": "分类"
+                }
+            }
+        },
+        "models.HelpDetail": {
+            "title": "HelpDetail",
+            "type": "object",
+            "properties": {
+                "chapter": {
+                    "description": "章节",
+                    "type": "string"
+                },
+                "classify": {
+                    "description": "分类",
+                    "type": "string"
+                },
+                "content": {
+                    "description": "内容",
+                    "type": "string"
+                },
+                "created": {
+                    "description": "注册时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "deleted": {
+                    "description": "删除时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "id": {
+                    "description": "id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "lastId": {
+                    "description": "上级id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "level": {
+                    "description": "级别 1为分类，2为章节，3为标题",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "title": {
+                    "description": "标题",
+                    "type": "string"
+                },
+                "updated": {
+                    "description": "修改时间",
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.HelpDetailListContainer": {
+            "title": "BaseListContainer",
+            "type": "object",
+            "properties": {
+                "helpList": {
+                    "description": "帮助列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.HelpDetail"
+                    }
+                },
+                "pageNum": {
+                    "description": "当前页数",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "pageTime": {
+                    "description": "查询时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "totalCount": {
+                    "description": "总数",
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.HelpTitle": {
+            "title": "HelpTitle",
+            "type": "object",
+            "properties": {
+                "title": {
+                    "$ref": "#/definitions/models.Help",
+                    "description": "标题"
+                }
+            }
+        },
+        "models.JoinUs": {
+            "title": "JoinUs",
+            "type": "object",
+            "properties": {
+                "classify": {
+                    "description": "分类",
+                    "type": "string"
+                },
+                "cover": {
+                    "description": "封面",
+                    "type": "string"
+                },
+                "created": {
+                    "description": "创建时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "deleted": {
+                    "description": "删除时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "id": {
+                    "description": "id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "showType": {
+                    "description": "展示类型，1为仅代理可看（伯乐用户 / 代理商），2为VIP会员可看，3为所有用户可看",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "title": {
+                    "description": "课程名称",
+                    "type": "string"
+                },
+                "totalDuration": {
+                    "description": "总时长，单位秒",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "uId": {
+                    "description": "管理员id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "updated": {
+                    "description": "修改时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "url": {
+                    "description": "介绍视频地址(安卓用)",
+                    "type": "string"
+                },
+                "videoUrl": {
+                    "description": "介绍视频地址",
+                    "type": "string"
+                }
+            }
+        },
+        "models.JoinUsListContainer": {
+            "title": "BaseListContainer",
+            "type": "object",
+            "properties": {
+                "joinUsList": {
+                    "description": "加盟开课栏目列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.JoinUs"
+                    }
+                },
+                "pageNum": {
+                    "description": "当前页数",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "pageTime": {
+                    "description": "查询时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "totalCount": {
+                    "description": "总数",
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.QrcodeJsonBody": {
+            "title": "QrcodeJsonBody",
+            "type": "object",
+            "properties": {
+                "expire_seconds": {
+                    "description": "该二维码有效时间，以秒为单位。 最大不超过2592000（即30天）。",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "ticket": {
+                    "description": "获取的二维码ticket，凭借此ticket可以在有效时间内换取二维码。",
+                    "type": "string"
+                },
+                "url": {
+                    "description": "二维码图片解析后的地址，开发者可根据该地址自行生成需要的二维码图片",
+                    "type": "string"
+                }
+            }
+        },
+        "models.QuestionnaireAnswer": {
+            "title": "QuestionnaireAnswer",
+            "type": "object",
+            "properties": {
+                "answer": {
+                    "description": "回答",
+                    "type": "string"
+                },
+                "authorId": {
+                    "description": "用户id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "content": {
+                    "description": "内容",
+                    "type": "string"
+                },
+                "created": {
+                    "description": "创建时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "deleted": {
+                    "description": "删除时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "direction": {
+                    "description": "测评方向",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "questionnaireAuthorStatisticsId": {
+                    "description": "问卷问题id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "questionnaireQuestionId": {
+                    "description": "问卷问题id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "score": {
+                    "description": "分数",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "updated": {
+                    "description": "修改时间",
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.QuestionnaireAnswerListContainer": {
+            "title": "QuestionnaireAnswerListContainer",
+            "type": "object",
+            "properties": {
+                "questionnaireAnswerList": {
+                    "description": "回答列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.QuestionnaireAnswer"
+                    }
+                }
+            }
+        },
+        "models.QuestionnaireAuthorStatistics": {
+            "title": "QuestionnaireAuthorStatistics",
+            "type": "object",
+            "properties": {
+                "age": {
+                    "description": "年龄",
+                    "type": "string"
+                },
+                "authorId": {
+                    "description": "用户id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "average1": {
+                    "description": "均分1",
+                    "type": "number",
+                    "format": "double"
+                },
+                "average2": {
+                    "description": "均分2",
+                    "type": "number",
+                    "format": "double"
+                },
+                "average3": {
+                    "description": "均分3",
+                    "type": "number",
+                    "format": "double"
+                },
+                "average4": {
+                    "description": "均分4",
+                    "type": "number",
+                    "format": "double"
+                },
+                "average5": {
+                    "description": "均分5",
+                    "type": "number",
+                    "format": "double"
+                },
+                "average6": {
+                    "description": "均分6",
+                    "type": "number",
+                    "format": "double"
+                },
+                "average7": {
+                    "description": "均分7",
+                    "type": "number",
+                    "format": "double"
+                },
+                "city": {
+                    "description": "城市",
+                    "type": "string"
+                },
+                "created": {
+                    "description": "创建时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "deleted": {
+                    "description": "删除时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "direction1": {
+                    "description": "测评方向1",
+                    "type": "string"
+                },
+                "direction2": {
+                    "description": "测评方向2",
+                    "type": "string"
+                },
+                "direction3": {
+                    "description": "测评方向3",
+                    "type": "string"
+                },
+                "direction4": {
+                    "description": "测评方向4",
+                    "type": "string"
+                },
+                "direction5": {
+                    "description": "测评方向5",
+                    "type": "string"
+                },
+                "direction6": {
+                    "description": "测评方向6",
+                    "type": "string"
+                },
+                "direction7": {
+                    "description": "测评方向7",
+                    "type": "string"
+                },
+                "education": {
+                    "description": "学历",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "idCard": {
+                    "description": "身份证号码",
+                    "type": "string"
+                },
+                "income": {
+                    "description": "家庭年收入",
+                    "type": "string"
+                },
+                "marriage": {
+                    "description": "婚姻",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "姓名",
+                    "type": "string"
+                },
+                "occupation": {
+                    "description": "职业",
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "questionnaireId": {
+                    "description": "问卷id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "sex": {
+                    "description": "性别",
+                    "type": "string"
+                },
+                "totalScore": {
+                    "description": "分数",
+                    "type": "number",
+                    "format": "double"
+                },
+                "updated": {
+                    "description": "修改时间",
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.QuestionnaireAuthorStatisticsContainer": {
+            "title": "QuestionnaireAuthorStatisticsContainer",
+            "type": "object",
+            "properties": {
+                "courseId": {
+                    "description": "课程id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "courseName": {
+                    "description": "赠送课程名称",
+                    "type": "string"
+                },
+                "questionnaireAuthorStatistics": {
+                    "$ref": "#/definitions/models.QuestionnaireAuthorStatistics",
+                    "description": "问卷结果"
+                }
+            }
+        },
+        "models.QuestionnaireAuthorStatisticsForBackendContainer": {
+            "title": "BaseListContainer",
+            "type": "object",
+            "properties": {
+                "pageNum": {
+                    "description": "当前页数",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "pageTime": {
+                    "description": "查询时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "questionnaireAuthorStatisticsList": {
+                    "description": "问卷结果",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.QuestionnaireAuthorStatisticsWithHasCourse"
+                    }
+                },
+                "totalCount": {
+                    "description": "总数",
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.QuestionnaireAuthorStatisticsWithHasCourse": {
+            "title": "QuestionnaireAuthorStatistics",
+            "type": "object",
+            "properties": {
+                "age": {
+                    "description": "年龄",
+                    "type": "string"
+                },
+                "authorId": {
+                    "description": "用户id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "average1": {
+                    "description": "均分1",
+                    "type": "number",
+                    "format": "double"
+                },
+                "average2": {
+                    "description": "均分2",
+                    "type": "number",
+                    "format": "double"
+                },
+                "average3": {
+                    "description": "均分3",
+                    "type": "number",
+                    "format": "double"
+                },
+                "average4": {
+                    "description": "均分4",
+                    "type": "number",
+                    "format": "double"
+                },
+                "average5": {
+                    "description": "均分5",
+                    "type": "number",
+                    "format": "double"
+                },
+                "average6": {
+                    "description": "均分6",
+                    "type": "number",
+                    "format": "double"
+                },
+                "average7": {
+                    "description": "均分7",
+                    "type": "number",
+                    "format": "double"
+                },
+                "city": {
+                    "description": "城市",
+                    "type": "string"
+                },
+                "created": {
+                    "description": "创建时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "deleted": {
+                    "description": "删除时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "direction1": {
+                    "description": "测评方向1",
+                    "type": "string"
+                },
+                "direction2": {
+                    "description": "测评方向2",
+                    "type": "string"
+                },
+                "direction3": {
+                    "description": "测评方向3",
+                    "type": "string"
+                },
+                "direction4": {
+                    "description": "测评方向4",
+                    "type": "string"
+                },
+                "direction5": {
+                    "description": "测评方向5",
+                    "type": "string"
+                },
+                "direction6": {
+                    "description": "测评方向6",
+                    "type": "string"
+                },
+                "direction7": {
+                    "description": "测评方向7",
+                    "type": "string"
+                },
+                "education": {
+                    "description": "学历",
+                    "type": "string"
+                },
+                "hasCourse": {
+                    "description": "是否领取课程，1是0否",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "id": {
+                    "description": "id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "idCard": {
+                    "description": "身份证号码",
+                    "type": "string"
+                },
+                "income": {
+                    "description": "家庭年收入",
+                    "type": "string"
+                },
+                "marriage": {
+                    "description": "婚姻",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "姓名",
+                    "type": "string"
+                },
+                "occupation": {
+                    "description": "职业",
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "questionnaireId": {
+                    "description": "问卷id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "sex": {
+                    "description": "性别",
+                    "type": "string"
+                },
+                "totalScore": {
+                    "description": "分数",
+                    "type": "number",
+                    "format": "double"
+                },
+                "updated": {
+                    "description": "修改时间",
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.QuestionnaireQuestion": {
+            "title": "QuestionnaireQuestion",
+            "type": "object",
+            "properties": {
+                "answer1": {
+                    "description": "回答1",
+                    "type": "string"
+                },
+                "answer2": {
+                    "description": "回答2",
+                    "type": "string"
+                },
+                "answer3": {
+                    "description": "回答3",
+                    "type": "string"
+                },
+                "answer4": {
+                    "description": "回答4",
+                    "type": "string"
+                },
+                "answer5": {
+                    "description": "回答5",
+                    "type": "string"
+                },
+                "authorId": {
+                    "description": "用户id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "content": {
+                    "description": "内容",
+                    "type": "string"
+                },
+                "created": {
+                    "description": "创建时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "deleted": {
+                    "description": "删除时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "direction": {
+                    "description": "测评方向",
+                    "type": "string"
+                },
+                "directionWeight": {
+                    "description": "测评方向权重",
+                    "type": "number",
+                    "format": "double"
+                },
+                "id": {
+                    "description": "id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "score1": {
+                    "description": "分数1",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "score2": {
+                    "description": "分数2",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "score3": {
+                    "description": "分数3",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "score4": {
+                    "description": "分数4",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "score5": {
+                    "description": "分数5",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "sortNo": {
+                    "description": "排序号",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "updated": {
+                    "description": "修改时间",
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.QuestionnaireQuestionListContainer": {
+            "title": "QuestionnaireQuestionListContainer",
+            "type": "object",
+            "properties": {
+                "questionnaireQuestionList": {
+                    "description": "问题列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.QuestionnaireQuestion"
+                    }
+                }
+            }
+        },
+        "models.RecentActivity": {
+            "title": "RecentActivity",
+            "type": "object",
+            "properties": {
+                "banner": {
+                    "description": "活动海报",
+                    "type": "string"
+                },
+                "content": {
+                    "description": "活动介绍",
+                    "type": "string"
+                },
+                "created": {
+                    "description": "创建时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "deleted": {
+                    "description": "删除时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "id": {
+                    "description": "id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "title": {
+                    "description": "活动名称",
+                    "type": "string"
+                },
+                "uId": {
+                    "description": "管理员id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "updated": {
+                    "description": "修改时间",
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.RecentActivityContainer": {
+            "title": "BaseListContainer",
+            "type": "object",
+            "properties": {
+                "pageNum": {
+                    "description": "当前页数",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "pageTime": {
+                    "description": "查询时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "recentActivityList": {
+                    "description": "近期活动列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.RecentActivity"
+                    }
+                },
+                "totalCount": {
+                    "description": "总数",
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.RecentActivityDetailContainer": {
+            "title": "RecentActivityDetailContainer",
+            "type": "object",
+            "properties": {
+                "recentActivity": {
+                    "$ref": "#/definitions/models.RecentActivity",
+                    "description": "活动详情"
+                }
+            }
+        },
+        "models.Report": {
+            "title": "Report",
+            "type": "object",
+            "properties": {
+                "authorId": {
+                    "description": "用户id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "classify": {
+                    "description": "举报内容类别 1:违法违禁, 2:色情, 3:低俗, 4:赌博诈骗, 5:血腥暴力, 6:人生攻击, 7:与其他视频相同, 8:不良封面标题, 9;青少年不良信息, 10:其他 ",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "content": {
+                    "description": "举报内容",
+                    "type": "string"
+                },
+                "created": {
+                    "description": "创建时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "deleted": {
+                    "description": "删除时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "id": {
+                    "description": "id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "type": {
+                    "description": "举报类型 1:视频 2:评论",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "updated": {
+                    "description": "修改时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "valueId": {
+                    "description": "type为1时:视频id, type为2时:评论id",
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.ReportListContainer": {
+            "title": "BaseListContainer",
+            "type": "object",
+            "properties": {
+                "pageNum": {
+                    "description": "当前页数",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "pageTime": {
+                    "description": "查询时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "totalCount": {
+                    "description": "总数",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "viewVideoList": {
+                    "description": "举报记录列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Report"
+                    }
+                }
+            }
+        },
+        "models.SystemConfig": {
+            "title": "SystemConfig",
+            "type": "object",
+            "properties": {
+                "created": {
+                    "description": "创建时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "description": {
+                    "description": "描述",
+                    "type": "string"
+                },
+                "program": {
+                    "description": "配置参数",
+                    "type": "string"
+                },
+                "programExpireTime": {
+                    "description": "参数过期时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "programValue": {
+                    "description": "参数的值",
+                    "type": "string"
+                },
+                "rId": {
+                    "description": "配置编号",
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.SystemConfigListContainer": {
+            "title": "SystemConfigListContainer",
+            "type": "object",
+            "properties": {
+                "systemConfigList": {
+                    "description": "系统配置",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.SystemConfig"
+                    }
+                }
+            }
+        },
+        "models.UserShort": {
+            "title": "UserShort",
+            "type": "object",
+            "properties": {
+                "created": {
+                    "description": "注册时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "defaultAuthAppid": {
+                    "description": "默认授权方appid",
+                    "type": "string"
+                },
+                "defaultAuthInfoId": {
+                    "description": "默认公众号id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "deleted": {
+                    "description": "删除时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "email": {
+                    "description": "电子邮箱",
+                    "type": "string"
+                },
+                "nickName": {
+                    "description": "昵称（登录账号）",
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "roleType": {
+                    "description": "角色，1为管理员（可创建用户）",
+                    "type": "string"
+                },
+                "uId": {
+                    "description": "uId",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "updated": {
+                    "description": "修改时间",
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.UserShortContainer": {
+            "title": "UserShortContainer",
+            "type": "object",
+            "properties": {
+                "authInfo": {
+                    "$ref": "#/definitions/models.AuthInfoShort",
+                    "description": "用户权限下公众号信息"
+                },
+                "user": {
+                    "$ref": "#/definitions/models.UserShort",
+                    "description": "用户信息"
+                }
+            }
+        },
+        "models.Version": {
+            "title": "Version",
+            "type": "object",
+            "properties": {
+                "channel": {
+                    "description": "渠道",
+                    "type": "string"
+                },
+                "created": {
+                    "description": "创建时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "description": {
+                    "description": "描述",
+                    "type": "string"
+                },
+                "deviceOs": {
+                    "description": "设备系统",
+                    "type": "string"
+                },
+                "filePath": {
+                    "description": "文件路径",
+                    "type": "string"
+                },
+                "version": {
+                    "description": "版本号",
+                    "type": "string"
+                },
+                "versionId": {
+                    "description": "版本Id",
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.VersionContainer": {
+            "title": "BaseListContainer",
+            "type": "object",
+            "properties": {
+                "pageNum": {
+                    "description": "当前页数",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "pageTime": {
+                    "description": "查询时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "totalCount": {
+                    "description": "总数",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "versionList": {
+                    "description": "版本列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Version"
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,491 @@
+package main
+
+import (
+	_ "github.com/astaxie/beego/cache/redis"
+	"jingting_server/apigateway/util"
+	_ "github.com/mkevac/debugcharts"
+	"strings"
+	"net/http"
+	"net/url"
+	"fmt"
+	"net/http/httputil"
+	"log"
+	"github.com/astaxie/beego"
+	"time"
+	"github.com/micro/go-micro/registry/consul"
+	"github.com/micro/go-micro/registry"
+	"jingting_server/apigateway/base"
+	"github.com/micro/go-micro"
+	"math/rand"
+	"strconv"
+	"github.com/gorilla/handlers"
+	"runtime"
+	"jingting_server/apigateway/models"
+	"encoding/json"
+	//"github.com/panjf2000/ants"
+)
+
+//接口网关，支持权重
+func main() {
+	//协程池
+	//base.GoPool, _ = ants.NewPool(1000)
+
+	//服务注册
+	registServiceToConsul()
+
+	//性能监控
+	performanceMonitoring()
+
+	startServer()
+
+	//var wg sync.WaitGroup
+	//wg.Add(1)
+	//go func() {
+	//	test()
+	//	defer wg.Done()
+	//}()
+	//wg.Wait()
+}
+
+type handle struct {
+	urlWeight map[string]int		//访问地址与权重  权重之和为100
+	redirectArray []string			//访问地址数组
+}
+
+type Service struct {
+	user *handle
+	video *handle
+	videoShare *handle
+	activity *handle
+	article *handle
+	message *handle
+	public *handle
+	order *handle
+	socket *handle
+}
+
+var userRequestURIArray []string
+var videoRequestURIArray []string
+var videoShareRequestURIArray []string
+var activityRequestURIArray []string
+var articleRequestURIArray []string
+var messageRequestURIArray []string
+var publicRequestURIArray []string
+var orderRequestURIArray []string
+var socketRequestURIArray []string
+
+var userDefineRequestRedirectArray []string
+var videoDefineRequestRedirectArray []string
+var videoShareDefineRequestRedirectArray []string
+var activityDefineRequestRedirectArray []string
+var articleDefineRequestRedirectArray []string
+var messageDefineRequestRedirectArray []string
+var publicDefineRequestRedirectArray []string
+var orderDefineRequestRedirectArray []string
+var socketDefineRequestRedirectArray []string
+
+func init(){
+	userRequestURIArray = make([]string, 0)
+	userRequestURIArray = append(userRequestURIArray, "/v2/user")
+	userRequestURIArray = append(userRequestURIArray, "/v2/authorizeEvent")
+	userRequestURIArray = append(userRequestURIArray, "/v2/author")
+	userRequestURIArray = append(userRequestURIArray, "/v2/authorAccount")
+
+	videoRequestURIArray = make([]string, 0)
+	videoRequestURIArray = append(videoRequestURIArray, "/v2/video")
+	videoRequestURIArray = append(videoRequestURIArray, "/v2/videoShare")
+	videoRequestURIArray = append(videoRequestURIArray, "/v2/examineVideo")
+	videoRequestURIArray = append(videoRequestURIArray, "/v2/tencentCloud")
+	videoRequestURIArray = append(videoRequestURIArray, "/v2/comment")
+	videoRequestURIArray = append(videoRequestURIArray, "/v2/course")
+	videoRequestURIArray = append(videoRequestURIArray, "/v2/collection")
+	videoRequestURIArray = append(videoRequestURIArray, "/v2/share")
+
+	activityRequestURIArray = make([]string, 0)
+	activityRequestURIArray = append(activityRequestURIArray, "/v2/activity")
+
+	articleRequestURIArray = make([]string, 0)
+	articleRequestURIArray = append(articleRequestURIArray, "/v2/article")
+	articleRequestURIArray = append(articleRequestURIArray, "/v2/businessCard")
+
+	messageRequestURIArray = make([]string, 0)
+	messageRequestURIArray = append(messageRequestURIArray, "/v2/message")
+	messageRequestURIArray = append(messageRequestURIArray, "/v2/push")
+	messageRequestURIArray = append(messageRequestURIArray, "/v2/gzh")
+
+	publicRequestURIArray = make([]string, 0)
+	publicRequestURIArray = append(publicRequestURIArray, "/v2/public")
+	publicRequestURIArray = append(publicRequestURIArray, "/v2/qrCode")
+	publicRequestURIArray = append(publicRequestURIArray, "/v2/help")
+	publicRequestURIArray = append(publicRequestURIArray, "/v2/banner")
+	publicRequestURIArray = append(publicRequestURIArray, "/v2/report")
+	publicRequestURIArray = append(publicRequestURIArray, "/v2/joinUs")
+	publicRequestURIArray = append(publicRequestURIArray, "/v2/recentActivity")
+	publicRequestURIArray = append(publicRequestURIArray, "/v2/bug")
+
+	orderRequestURIArray = make([]string, 0)
+	orderRequestURIArray = append(orderRequestURIArray, "/v2/order")
+	orderRequestURIArray = append(orderRequestURIArray, "/v2/cashOut")
+
+	socketRequestURIArray = make([]string, 0)
+	socketRequestURIArray = append(socketRequestURIArray, "/v2/socket")
+}
+
+func (this *Service) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	//head校验防止恶意请求
+	userAgent := r.Header.Get("User-Agent")
+	if strings.Contains(userAgent, "Apache") || strings.Contains(userAgent, "apache") || strings.Contains(userAgent, "Java") || strings.Contains(userAgent, "java") {
+		util.Logger.Info("成功拦截恶意请求--header")
+		util.Logger.Info("RequestURI "+r.RequestURI)
+		util.Logger.Info(r.Header)
+		util.Logger.Info("成功拦截恶意请求--header")
+		fmt.Fprintf(w, "401 Not authorized")
+		return
+	}
+
+	//统一身份校验
+	//authorization := r.Header.Get("Authorization")
+
+	//ants.Submit(func() {
+	//go func() {
+		//网关停服提示
+		apigatewayOnlineKey := "apigateway_online_status"
+		var config models.SystemConfig
+		if base.RedisCache.IsExist(apigatewayOnlineKey) {
+			apigatewayOnlineStatusRedis := base.RedisCache.Get(apigatewayOnlineKey)
+			json.Unmarshal(apigatewayOnlineStatusRedis.([]byte), &config)
+		} else {
+			hasConfig, _ := base.DBEngine.Table("system_config").Where("program=?", apigatewayOnlineKey).Get(&config)
+			if hasConfig {
+				apigatewayOnlineStatusRedisBytes, _ := json.Marshal(config)
+				base.RedisCache.Put(apigatewayOnlineKey, string(apigatewayOnlineStatusRedisBytes), 24 * 60 * 60 * time.Second)
+			}
+		}
+		if config.ProgramValue != "1" {
+			result := "{\"header\": {\"code\": \"1000\",\"description\": \"success\"},\"data\": {\"alertCode\": \"apigateway100\",\"alertMessage\": \""+config.Description+"\"}}"
+			w.Write([]byte(result))
+			return
+		}
+
+		//获得跳转地址
+		var remote *url.URL
+		remote = this.checkRequestURI(r)
+		if remote == nil {
+			fmt.Fprintf(w, "404 Not Found")
+			return
+		}
+
+		//转发
+		util.Logger.Info("proxy from "+r.URL.String()+" to "+remote.String())
+		proxy := httputil.NewSingleHostReverseProxy(remote)
+
+		//ctx := r.Context()
+		//timeout := 50 * time.Millisecond
+		//ctx, cancel := context.WithTimeout(ctx, timeout)
+		//r.WithContext(ctx)
+		proxy.ServeHTTP(w, r)
+		//defer cancel()
+	//}()
+}
+
+//检查uri
+func (this *Service) checkRequestURI(r *http.Request) (u *url.URL) {
+
+	for _, userRequestURI := range userRequestURIArray {
+		if strings.Contains(r.RequestURI, userRequestURI) {
+			u, _ = url.Parse(this.user.getUrlByWeight())
+			return u
+		}
+	}
+
+	for _, videoRequestURI := range videoRequestURIArray {
+		if strings.Contains(r.RequestURI, videoRequestURI) {
+			u, _ = url.Parse(this.video.getUrlByWeight())
+			return u
+		}
+	}
+
+	for _, videoShareRequestURI := range videoShareRequestURIArray {
+		if strings.Contains(r.RequestURI, videoShareRequestURI) {
+			u, _ = url.Parse(this.videoShare.getUrlByWeight())
+			return u
+		}
+	}
+
+	for _, activityRequestURI := range activityRequestURIArray {
+		if strings.Contains(r.RequestURI, activityRequestURI) {
+			u, _ = url.Parse(this.activity.getUrlByWeight())
+			return u
+		}
+	}
+
+	for _, articleRequestURI := range articleRequestURIArray {
+		if strings.Contains(r.RequestURI, articleRequestURI) {
+			u, _ = url.Parse(this.article.getUrlByWeight())
+			return u
+		}
+	}
+
+	for _, messageRequestURI := range messageRequestURIArray {
+		if strings.Contains(r.RequestURI, messageRequestURI) {
+			u, _ = url.Parse(this.message.getUrlByWeight())
+			return u
+		}
+	}
+
+	for _, publicRequestURI := range publicRequestURIArray {
+		if strings.Contains(r.RequestURI, publicRequestURI) {
+			u, _ = url.Parse(this.public.getUrlByWeight())
+			return u
+		}
+	}
+
+	for _, orderRequestURI := range orderRequestURIArray {
+		if strings.Contains(r.RequestURI, orderRequestURI) {
+			u, _ = url.Parse(this.order.getUrlByWeight())
+			return u
+		}
+	}
+
+	for _, socketRequestURI := range socketRequestURIArray {
+		if strings.Contains(r.RequestURI, socketRequestURI) {
+			u, _ = url.Parse(this.socket.getUrlByWeight())
+			return u
+		}
+	}
+
+	return nil
+}
+
+//初始化权重并启动服务
+func startServer() {
+	userUrlWeight := make(map[string]int)
+	videoUrlWeight := make(map[string]int)
+	videoShareUrlWeight := make(map[string]int)
+	activityUrlWeight := make(map[string]int)
+	articleUrlWeight := make(map[string]int)
+	messageUrlWeight := make(map[string]int)
+	publicUrlWeight := make(map[string]int)
+	orderUrlWeight := make(map[string]int)
+	socketUrlWeight := make(map[string]int)
+
+	if beego.BConfig.RunMode == "dev" {
+		userUrlWeight["http://127.0.0.1:9002"] = 100
+		userDefineRequestRedirectArray = initRedirectArray(userUrlWeight)
+
+		videoUrlWeight["http://127.0.0.1:9004"] = 100
+		videoDefineRequestRedirectArray = initRedirectArray(videoUrlWeight)
+
+		videoShareUrlWeight["http://127.0.0.1:9004"] = 100
+		videoShareDefineRequestRedirectArray = initRedirectArray(videoShareUrlWeight)
+
+		activityUrlWeight["http://127.0.0.1:9006"] = 100
+		activityDefineRequestRedirectArray = initRedirectArray(activityUrlWeight)
+
+		articleUrlWeight["http://127.0.0.1:9008"] = 100
+		articleDefineRequestRedirectArray = initRedirectArray(articleUrlWeight)
+
+		messageUrlWeight["http://127.0.0.1:9010"] = 100
+		messageDefineRequestRedirectArray = initRedirectArray(messageUrlWeight)
+
+		publicUrlWeight["http://127.0.0.1:9012"] = 100
+		publicDefineRequestRedirectArray = initRedirectArray(publicUrlWeight)
+
+		orderUrlWeight["http://127.0.0.1:9014"] = 100
+		orderDefineRequestRedirectArray = initRedirectArray(orderUrlWeight)
+
+		socketUrlWeight["http://127.0.0.1:9019"] = 100
+		socketDefineRequestRedirectArray = initRedirectArray(socketUrlWeight)
+	} else if beego.BConfig.RunMode == "test" {
+		userUrlWeight["http://#ip#:9002"] = 100
+		userDefineRequestRedirectArray = initRedirectArray(userUrlWeight)
+
+		videoUrlWeight["http://#ip#:9004"] = 100
+		videoDefineRequestRedirectArray = initRedirectArray(videoUrlWeight)
+
+		videoShareUrlWeight["http://#ip#:9004"] = 100
+		videoShareDefineRequestRedirectArray = initRedirectArray(videoShareUrlWeight)
+
+		activityUrlWeight["http://#ip#:9006"] = 100
+		activityDefineRequestRedirectArray = initRedirectArray(activityUrlWeight)
+
+		articleUrlWeight["http://#ip#:9008"] = 100
+		articleDefineRequestRedirectArray = initRedirectArray(articleUrlWeight)
+
+		messageUrlWeight["http://#ip#:9010"] = 100
+		messageDefineRequestRedirectArray = initRedirectArray(messageUrlWeight)
+
+		publicUrlWeight["http://#ip#:9012"] = 100
+		publicDefineRequestRedirectArray = initRedirectArray(publicUrlWeight)
+
+		orderUrlWeight["http://#ip#:9014"] = 100
+		orderDefineRequestRedirectArray = initRedirectArray(orderUrlWeight)
+
+		socketUrlWeight["http://#ip#:9019"] = 100
+		socketDefineRequestRedirectArray = initRedirectArray(socketUrlWeight)
+	} else if beego.BConfig.RunMode == "prod" {
+		userUrlWeight["http://#ip#:9002"] = 100
+		userDefineRequestRedirectArray = initRedirectArray(userUrlWeight)
+
+		videoUrlWeight["http://#ip#:9004"] = 100
+		videoDefineRequestRedirectArray = initRedirectArray(videoUrlWeight)
+
+		videoShareUrlWeight["http://#ip#:9004"] = 100
+		videoShareDefineRequestRedirectArray = initRedirectArray(videoShareUrlWeight)
+
+		activityUrlWeight["http://#ip#:9006"] = 100
+		activityDefineRequestRedirectArray = initRedirectArray(activityUrlWeight)
+
+		articleUrlWeight["http://#ip#:9008"] = 100
+		articleDefineRequestRedirectArray = initRedirectArray(articleUrlWeight)
+
+		messageUrlWeight["http://#ip#:9010"] = 100
+		messageDefineRequestRedirectArray = initRedirectArray(messageUrlWeight)
+
+		publicUrlWeight["http://#ip#:9012"] = 100
+		publicDefineRequestRedirectArray = initRedirectArray(publicUrlWeight)
+
+		orderUrlWeight["http://#ip#:9014"] = 100
+		orderDefineRequestRedirectArray = initRedirectArray(orderUrlWeight)
+
+		socketUrlWeight["http://#ip#:9019"] = 100
+		socketDefineRequestRedirectArray = initRedirectArray(socketUrlWeight)
+	}
+
+	// 注册被代理的服务器 (url)
+	service := &Service{
+		user: &handle{urlWeight: userUrlWeight, redirectArray: userDefineRequestRedirectArray},
+		video: &handle{urlWeight: videoUrlWeight, redirectArray: videoDefineRequestRedirectArray},
+		videoShare: &handle{urlWeight: videoShareUrlWeight, redirectArray: videoShareDefineRequestRedirectArray},
+		activity: &handle{urlWeight: activityUrlWeight, redirectArray: activityDefineRequestRedirectArray},
+		article: &handle{urlWeight: articleUrlWeight, redirectArray: articleDefineRequestRedirectArray},
+		message: &handle{urlWeight: messageUrlWeight, redirectArray: messageDefineRequestRedirectArray},
+		public: &handle{urlWeight: publicUrlWeight, redirectArray: publicDefineRequestRedirectArray},
+		order: &handle{urlWeight: orderUrlWeight, redirectArray: orderDefineRequestRedirectArray},
+		socket: &handle{urlWeight: socketUrlWeight, redirectArray: socketDefineRequestRedirectArray},
+	}
+	fmt.Println("start to ListenAndServe")
+	err := http.ListenAndServe(":9999", service)
+	if err != nil {
+		log.Fatalln("ListenAndServe: ", err)
+	}
+}
+
+//根据权重返回url
+func (h *handle) getUrlByWeight() string {
+	rand := rand.Intn(len(h.redirectArray))
+	return h.redirectArray[rand]
+}
+
+//注册服务至consul
+func registServiceToConsul(){
+	reg := consul.NewRegistry(func(op *registry.Options) {
+		op.Addrs = []string{
+			base.ConsulAddress,
+		}
+	})
+
+	// 初始化服务
+	service := micro.NewService(
+		micro.Name("go.micro.apigateway"),
+		micro.Version("1.0.0"),
+		//健康检查
+		micro.RegisterTTL(30 * time.Second),	//注册服务的过期时间
+		micro.RegisterInterval(20 * time.Second),//间隔多久再次注册服务
+		micro.Registry(reg),
+	)
+
+	service.Init()
+
+	// run server
+	go func() {
+		util.Logger.Info("start to service.Run()")
+		if err := service.Run(); err != nil {
+			panic(err)
+		}
+	}()
+}
+
+//初始化权重数组
+func initRedirectArray(urlWeight map[string]int) (array []string) {
+	for url, weight := range urlWeight {
+		for i := 0;i < weight;i++ {
+			array = append(array, url)
+		}
+	}
+
+	return array
+}
+
+//测试权重
+func test(){
+	userUrlWeight := make(map[string]int)
+	userUrlWeight["http://127.0.0.1:10"] = 10
+	userUrlWeight["http://127.0.0.1:20"] = 20
+	userUrlWeight["http://127.0.0.1:30"] = 30
+	userUrlWeight["http://127.0.0.1:40"] = 40
+	userDefineRequestRedirectArray = initRedirectArray(userUrlWeight)
+
+	var user *handle
+	user = &handle{urlWeight: userUrlWeight, redirectArray: userDefineRequestRedirectArray}
+
+	count10 := 0
+	count20 := 0
+	count30 := 0
+	count40 := 0
+
+
+	util.Logger.Info("start")
+	for i:=0;i<5000;i++ {
+		url := user.getUrlByWeight()
+
+		//util.Logger.Info(url)
+		if url == "http://127.0.0.1:10" {
+			count10 ++
+		} else if url == "http://127.0.0.1:20" {
+			count20 ++
+		} else if url == "http://127.0.0.1:30" {
+			count30 ++
+		} else if url == "http://127.0.0.1:40" {
+			count40 ++
+		}
+	}
+	util.Logger.Info("end")
+	util.Logger.Info("count10="+strconv.Itoa(count10))
+	util.Logger.Info("count20="+strconv.Itoa(count20))
+	util.Logger.Info("count30="+strconv.Itoa(count30))
+	util.Logger.Info("count40="+strconv.Itoa(count40))
+}
+
+
+//性能监控，地址：http://localhost:9030/debug/charts/
+func performanceMonitoring()  {
+	go dummyAllocations()
+	go dummyCPUUsage()
+	go func() {
+		log.Fatal(http.ListenAndServe(":9030", handlers.CompressHandler(http.DefaultServeMux)))
+	}()
+}
+
+func dummyCPUUsage() {
+	var a uint64
+	var t = time.Now()
+	for {
+		t = time.Now()
+		a += uint64(t.Unix())
+	}
+}
+
+func dummyAllocations() {
+	var d []uint64
+
+	for {
+		for i := 0; i < 2*1024*1024; i++ {
+			d = append(d, 42)
+		}
+		time.Sleep(time.Second * 10)
+		d = make([]uint64, 0)
+		runtime.GC()
+		time.Sleep(time.Second * 10)
+	}
+}

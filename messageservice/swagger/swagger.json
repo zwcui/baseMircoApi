@@ -1,0 +1,977 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "beego Test API",
+        "description": "beego has a very cool tools to autogenerate documents for your API",
+        "version": "1.0.0",
+        "termsOfService": "http://beego.me/",
+        "contact": {
+            "email": "astaxie@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        }
+    },
+    "basePath": "/v2",
+    "paths": {
+        "/gzh/createMenu": {
+            "post": {
+                "tags": [
+                    "gzh"
+                ],
+                "description": "创建公众号菜单",
+                "operationId": "GzhController.创建公众号菜单",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "param",
+                        "description": "菜单json",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} success"
+                    }
+                }
+            }
+        },
+        "/gzh/receiveMessage": {
+            "get": {
+                "tags": [
+                    "gzh"
+                ],
+                "description": "配置公众号回调地址（只用一次）",
+                "operationId": "GzhController.配置公众号回调地址（只用一次）",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "signature",
+                        "description": "signature",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "timestamp",
+                        "description": "timestamp",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "nonce",
+                        "description": "nonce",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "echostr",
+                        "description": "echostr",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} success"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "gzh"
+                ],
+                "description": "获取公众号信息（微信回调）",
+                "operationId": "GzhController.获取公众号信息（微信回调）",
+                "responses": {
+                    "200": {
+                        "description": "{string} success"
+                    }
+                }
+            }
+        },
+        "/gzh/testRequestGZHUserInfoByOpenId": {
+            "post": {
+                "tags": [
+                    "gzh"
+                ],
+                "description": "TestRequestGZHUserInfoByOpenId",
+                "operationId": "GzhController.TestRequestGZHUserInfoByOpenId",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "param",
+                        "description": "openid",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} success"
+                    }
+                }
+            }
+        },
+        "/message/addCustomerServiceTemplateMessage": {
+            "post": {
+                "tags": [
+                    "message"
+                ],
+                "description": "新增客服消息模板（h5使用）",
+                "operationId": "MessageController.新增客服消息模板（h5使用）",
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "authInfoId",
+                        "description": "公众号id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "title",
+                        "description": "标题",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "description",
+                        "description": "描述",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "url",
+                        "description": "url",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "picurl",
+                        "description": "picurl",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} success"
+                    }
+                }
+            }
+        },
+        "/message/addTemplateMessageData": {
+            "post": {
+                "tags": [
+                    "message"
+                ],
+                "description": "新增模板数据消息（h5使用）",
+                "operationId": "MessageController.新增模板数据消息（h5使用）",
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "authInfoId",
+                        "description": "公众号id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "templateId",
+                        "description": "模板号",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "templateTitle",
+                        "description": "模板标题",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "primaryIndustry",
+                        "description": "模板所属行业的一级行业",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "deputyIndustry",
+                        "description": "模板所属行业的二级行业",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "url",
+                        "description": "url",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "data",
+                        "description": "模板数据",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "sendTime",
+                        "description": "发送时间",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "sendSex",
+                        "description": "发送性别",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "sendProvince",
+                        "description": "发送省份",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "sendCity",
+                        "description": "发送城市",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} success"
+                    }
+                }
+            }
+        },
+        "/message/deleteCustomerServiceTemplateMessage": {
+            "delete": {
+                "tags": [
+                    "message"
+                ],
+                "description": "删除客服消息模板（h5使用）",
+                "operationId": "MessageController.删除客服消息模板（h5使用）",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "id",
+                        "description": "客服消息模板id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} success"
+                    }
+                }
+            }
+        },
+        "/message/deleteTemplateMessageData": {
+            "delete": {
+                "tags": [
+                    "message"
+                ],
+                "description": "删除模板数据消息（h5使用）",
+                "operationId": "MessageController.删除模板数据消息（h5使用）",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "templateMessageId",
+                        "description": "模板消息id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} success"
+                    }
+                }
+            }
+        },
+        "/message/getAppMessageList": {
+            "get": {
+                "tags": [
+                    "message"
+                ],
+                "description": "我的消息列表",
+                "operationId": "MessageController.我的消息列表",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "authorId",
+                        "description": "用户id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageNum",
+                        "description": "page num start from 1",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageTime",
+                        "description": "page time should be empty when pagenum == 1",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageSize",
+                        "description": "page size default is 15",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/models.AppMessageListContainer"
+                        }
+                    }
+                }
+            }
+        },
+        "/message/getCustomerServiceTemplateMessageList": {
+            "get": {
+                "tags": [
+                    "message"
+                ],
+                "description": "查看客服消息模板列表（h5使用）",
+                "operationId": "MessageController.查看客服消息模板列表（h5使用）",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "authInfoId",
+                        "description": "公众号id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "title",
+                        "description": "标题",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageNum",
+                        "description": "page num start from 1",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageTime",
+                        "description": "page time should be empty when pagenum == 1",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageSize",
+                        "description": "page size default is 15",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/models.CustomerServiceTemplateMessageListContainer"
+                        }
+                    }
+                }
+            }
+        },
+        "/message/getSubscriberCity": {
+            "get": {
+                "tags": [
+                    "message"
+                ],
+                "description": "查询所有订阅者城市（h5使用）",
+                "operationId": "MessageController.查询所有订阅者城市（h5使用）",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "authInfoId",
+                        "description": "公众号id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "province",
+                        "description": "省份",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string}"
+                    }
+                }
+            }
+        },
+        "/message/getSubscriberProvince": {
+            "get": {
+                "tags": [
+                    "message"
+                ],
+                "description": "查询所有订阅者省份（h5使用）",
+                "operationId": "MessageController.查询所有订阅者省份（h5使用）",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "authInfoId",
+                        "description": "公众号id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string}"
+                    }
+                }
+            }
+        },
+        "/message/getTemplateList": {
+            "get": {
+                "tags": [
+                    "message"
+                ],
+                "description": "获取已添加至帐号下所有模板列表（h5使用）",
+                "operationId": "MessageController.获取已添加至帐号下所有模板列表（h5使用）",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "authInfoId",
+                        "description": "公众号id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} success"
+                    }
+                }
+            }
+        },
+        "/message/getTemplateMessageDataList": {
+            "get": {
+                "tags": [
+                    "message"
+                ],
+                "description": "模板数据消息列表（h5使用）",
+                "operationId": "MessageController.模板数据消息列表（h5使用）",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "authInfoId",
+                        "description": "公众号id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "templateId",
+                        "description": "模板号",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "templateTitle",
+                        "description": "模板标题",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "status",
+                        "description": "发送状态，0未发送，1已发送",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageNum",
+                        "description": "page num start from 1",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageTime",
+                        "description": "page time should be empty when pagenum == 1",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageSize",
+                        "description": "page size default is 15",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/models.TemplateMessageDataListContainer"
+                        }
+                    }
+                }
+            }
+        },
+        "/message/receiveMessage/{appId}": {
+            "post": {
+                "tags": [
+                    "message"
+                ],
+                "description": "微信用户向公众账号发消息转发至此（微信使用）",
+                "operationId": "MessageController.微信用户向公众账号发消息转发至此（微信使用）",
+                "responses": {
+                    "200": {
+                        "description": "{string} success"
+                    }
+                }
+            }
+        },
+        "/message/sendCustomerServiceTemplateMessage": {
+            "post": {
+                "tags": [
+                    "message"
+                ],
+                "description": "发送客服消息模板（h5使用）",
+                "operationId": "MessageController.发送客服消息模板（h5使用）",
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "id",
+                        "description": "客服消息模板id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "sex",
+                        "description": "1男 2女 0全部",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "country",
+                        "description": "用户所在国家",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "province",
+                        "description": "用户所在省份",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "city",
+                        "description": "用户所在城市",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "nickNameList",
+                        "description": "昵称列表",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} success"
+                    }
+                }
+            }
+        },
+        "/message/testCreateShare": {
+            "post": {
+                "tags": [
+                    "message"
+                ],
+                "description": "TestCreateShare",
+                "operationId": "MessageController.TestCreateShare",
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "lastAuthorId",
+                        "description": "上级分享id",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "authorId",
+                        "description": "当前分享id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} success"
+                    }
+                }
+            }
+        },
+        "/push/push-to-single": {
+            "post": {
+                "tags": [
+                    "push"
+                ],
+                "description": "推送消息给指定用户",
+                "operationId": "PushController.推送消息给指定用户",
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "authorId",
+                        "description": "authorId",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "mContent",
+                        "description": "message content",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "actionUrl",
+                        "description": "message actionUrl",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "type",
+                        "description": "message type：1:购买成功消息 2:转发成功消息 3:评论成功消息 4:举报成功消息",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/models.AppMessage"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.AppMessage": {
+            "title": "AppMessage",
+            "type": "object",
+            "properties": {
+                "actionUrl": {
+                    "description": "跳转url",
+                    "type": "string"
+                },
+                "appType": {
+                    "description": "应用类型 0:app 1:公众号",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "content": {
+                    "description": "内容",
+                    "type": "string"
+                },
+                "created": {
+                    "description": "创建时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "id": {
+                    "description": "消息id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "receiverId": {
+                    "description": "接收者id 为0则是推送给所有人",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "type": {
+                    "description": "消息类型 1:购买成功消息 2:转发成功消息 3:评论成功消息 4:举报成功消息 5.下级关注通知",
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.AppMessageListContainer": {
+            "title": "BaseListContainer",
+            "type": "object",
+            "properties": {
+                "appMessageList": {
+                    "description": "我的消息列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.AppMessage"
+                    }
+                },
+                "pageNum": {
+                    "description": "当前页数",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "pageTime": {
+                    "description": "查询时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "totalCount": {
+                    "description": "总数",
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.BaseListContainer": {
+            "title": "BaseListContainer",
+            "type": "object",
+            "properties": {
+                "pageNum": {
+                    "description": "当前页数",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "pageTime": {
+                    "description": "查询时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "totalCount": {
+                    "description": "总数",
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.CustomerServiceTemplateMessage": {
+            "title": "CustomerServiceTemplateMessage",
+            "type": "object",
+            "properties": {
+                "authInfoId": {
+                    "description": "公众号id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "created": {
+                    "description": "创建时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "deleted": {
+                    "description": "删除时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "description": {
+                    "description": "描述，客服消息文字内容",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "picurl": {
+                    "description": "picurl",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "标题",
+                    "type": "string"
+                },
+                "updated": {
+                    "description": "修改时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "url": {
+                    "description": "url",
+                    "type": "string"
+                }
+            }
+        },
+        "models.CustomerServiceTemplateMessageListContainer": {
+            "title": "BaseListContainer",
+            "type": "object",
+            "properties": {
+                "customerServiceTemplateMessageList": {
+                    "description": "模板内容",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.CustomerServiceTemplateMessage"
+                    }
+                },
+                "pageNum": {
+                    "description": "当前页数",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "pageTime": {
+                    "description": "查询时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "totalCount": {
+                    "description": "总数",
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.TemplateMessageData": {
+            "title": "TemplateMessageData",
+            "type": "object",
+            "properties": {
+                "authInfoId": {
+                    "description": "公众号id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "created": {
+                    "description": "创建时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "deleted": {
+                    "description": "删除时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "deputyIndustry": {
+                    "description": "模板数据",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "primaryIndustry": {
+                    "description": "模板所属行业的一级行业",
+                    "type": "string"
+                },
+                "sendCity": {
+                    "description": "发送城市",
+                    "type": "string"
+                },
+                "sendProvince": {
+                    "description": "发送省份",
+                    "type": "string"
+                },
+                "sendSex": {
+                    "description": "发送性别，0全部 1男 2女",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "sendTime": {
+                    "description": "发送时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "status": {
+                    "description": "发送状态，0未发送，1已发送",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "templateId": {
+                    "description": "模板号",
+                    "type": "string"
+                },
+                "templateTitle": {
+                    "description": "模板标题",
+                    "type": "string"
+                },
+                "updated": {
+                    "description": "修改时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "url": {
+                    "description": "模板跳转链接（海外帐号没有跳转能力）",
+                    "type": "string"
+                }
+            }
+        },
+        "models.TemplateMessageDataListContainer": {
+            "title": "BaseListContainer",
+            "type": "object",
+            "properties": {
+                "pageNum": {
+                    "description": "当前页数",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "pageTime": {
+                    "description": "查询时间",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "templateMessageDataList": {
+                    "description": "模板内容",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.TemplateMessageData"
+                    }
+                },
+                "totalCount": {
+                    "description": "总数",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "totalSend": {
+                    "description": "发送数量",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "totalUnsend": {
+                    "description": "未发送数量",
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "gzh",
+            "description": "公众号开发\n"
+        }
+    ]
+}

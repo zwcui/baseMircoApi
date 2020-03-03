@@ -1,0 +1,141 @@
+微服务拆分
+userservice
+1.authorApi
+2.authorAccountApi
+3.authorizeEventApi
+4.userApi
+new(models.User), new(models.Subscriber), new(models.AuthInfo), new(models.UserAuth), new(models.AuthorAccount), new(models.Author),new(models.Role), new(models.Menu), new(models.RoleMenu)
+性能监控：http://localhost:9003/debug/charts/
+占用端口：9002，9003
+
+videoservice
+1.videoApi
+2.videoShareApi
+3.examineVideoApi
+4.tencentCloudApi
+5.commentApi
+6.filterApi
+7.courseApi
+8.collectionApi
+9.shareApi
+10.shortVideoApi
+new(models.Video), new(models.VideoShare), new(models.VideoEditHistory), new(models.VideoViewHistory), new(models.VideoLike), new(models.Comment), new(models.TencentCloudTask), new(models.TencentCloudTaskDetail), new(models.Course), new(models.CourseLike), new(models.Collection)
+new(models.CourseEditHistory), new(models.Share), new(models.ShortVideoLike), new(models.TencentCloudErrorVideo), new(models.CourseShare), new(models.Live), new(models.LiveConnection)
+性能监控：http://localhost:9005/debug/charts/
+占用端口：9004，9005
+
+activityservice
+1.activityApi
+new(models.Activity), new(models.FissionInfo), new(models.FissionMember), new(models.ActivityQrcode), new(models.JoinActivity), new(models.ReceivePrizeRecord), new(models.ActivityKeywordRecord), new(models.ActivityStatistics), new(models.ActivityChannelStatistics),
+性能监控：http://localhost:9007/debug/charts/
+占用端口：9006，9007
+
+articleservice
+1.articleApi
+2.businessCardApi
+new(models.Article), new(models.ArticleSignUp), new(models.ArticleShare), new(models.BusinessCard)
+性能监控：http://localhost:9009/debug/charts/
+占用端口：9008，9009
+
+messageservice
+1.messageApi
+2.pushApi
+3.gzhApi
+new(models.Message), new(models.CustomerServiceTemplateMessage), new(models.TemplateMessageData), new(models.AppMessage)
+性能监控：http://localhost:9011/debug/charts/
+占用端口：9010，9011
+
+publicservice
+1.publicApi
+2.helpApi
+3.qrCodeApi
+4.reportApi
+5.joinUsApi
+6.recentActivityApi
+7.bugApi
+8.questionnaireApi
+new(models.SystemConfig), new(models.SystemAuthCode), new(models.SystemAuthAccessToken), new(models.OperationRecord), new(models.Help), new(models.UserSignInDeviceInfo), new(models.Banner), new(models.Report), new(models.JoinUs), new(models.RecentActivity), new(models.BugRecord), new(models.AppConfig), new(models.Version), new(models.Questionnaire), new(models.QuestionnaireQuestion), new(models.QuestionnaireAnswer), new(models.QuestionnaireAuthorStatistics)
+性能监控：http://localhost:9013/debug/charts/
+占用端口：9012，9013
+
+orderservice
+1.cashOutApi
+2.payOrderApi
+new(models.PayOrder), new(models.AccountTransactionRecord), new(models.TransfersHistory), new(models.CashOut), new(models.OfflineOrder), new(models.OfflineRewardRecord), new(models.OfflineQrcodeOrder)
+性能监控：http://localhost:9015/debug/charts/
+占用端口：9014，9015
+
+socketservice
+1.socketApi
+性能监控：http://localhost:9020/debug/charts/
+占用端口：9018，9019，9020
+
+taskservice
+性能监控：http://localhost:9017/debug/charts/
+占用端口：9016，9017
+
+apigateway
+new(models.ApiConfig)
+性能监控：http://localhost:9030/debug/charts/
+占用端口：9999，9030，9021
+
+yunzhanghuservice
+new(models.YunPayOrder)
+性能监控：http://localhost:9023/debug/charts/
+占用端口：9022，9023
+
+storeservice
+性能监控：http://localhost:9025/debug/charts/
+占用端口：9024，9025
+new(models.Store), new(models.StoreCourse), new(models.StoreApply)
+
+
+需要微服务开发：
+1.推送（已完成）
+2.userwithnickname
+3.authorwith...
+4.messageapi
+
+
+外测接口地址由/v1修改为/v2
+外测swagger地址
+http://#ip#:9999/v2/user/swagger/
+http://#ip#:9999/v2/video/swagger/
+http://#ip#:9999/v2/public/swagger/
+http://#ip#:9999/v2/activity/swagger/
+http://#ip#:9999/v2/article/swagger/
+http://#ip#:9999/v2/message/swagger/
+http://#ip#:9999/v2/order/swagger/
+http://test.vipask.net/userCenter/swagger.html
+外测socket地址
+ws://#ip#:9018/ws
+外测性能监控地址
+http://test.vipask.net/userCenter/debug.html
+外测socket在线查询地址
+http://test.vipask.net/userCenter/socketOnline.html
+
+
+查看consul
+http://#ip#:8500
+consul docker 单节点部署
+docker run --restart=always --name consul1 -d -p 8500:8500 -p 8300:8300 -p 8301:8301 -p 8302:8302 -p 8600:8600 consul agent -server -bootstrap-expect=1 -ui -bind=0.0.0.0 -client=0.0.0.0
+consul docker 多节点部署
+1.docker run --name consul1 -d -p 8500:8500 -p 8300:8300 -p 8301:8301 -p 8302:8302 -p 8600:8600 consul agent -server -bootstrap-expect 2 -ui -bind=0.0.0.0 -client=0 .0.0.0
+2.docker inspect --format='{{.NetworkSettings.IPAddress}}' consul1
+2.docker run --name consul2 -d -p 8501:8500 consul agent -server -ui -bind=0.0.0.0 -client=0.0.0.0 -join ?.?.?.?
+3.docker run --name consul3 -d -p 8502:8500 consul agent -server -ui -bind=0.0.0.0 -client=0.0.0.0 -join ?.?.?.?
+【参考 https://blog.csdn.net/junmoxi/article/details/90521818】
+【consul集群 nginx配置  https://blog.csdn.net/liuxiaoxiaosmile/article/details/83017430】
+
+
+
+微服务开发
+1.proto文件下创建proto文件
+2.用命令生成 【.micro.go】与【.pb.go】文件     protoc --proto_path=:. --micro_out=. --go_out=. proto/*.proto
+3.服务注册与发现使用consul，调试使用 consul agent -dev -ui ，自带ui界面 http://127.0.0.1:8500/ui       【参考：https://blog.csdn.net/benben_2015/article/details/89710442】
+4.启动consul后，server进行注册，client调用
+
+
+
+
+
